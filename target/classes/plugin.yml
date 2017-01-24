@@ -1,0 +1,11 @@
+name: KitPvP
+main: me.cherrykit.Main
+version: 1.0
+
+commands:
+   kit:
+     description: Choose a kit to play with.
+     usage: /kit
+   stats:
+     description: See your kitpvp stats or the stats of another player.
+     usage: /stats or /stats <player>
