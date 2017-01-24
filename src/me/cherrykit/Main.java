@@ -41,6 +41,7 @@ public class Main extends JavaPlugin implements Listener {
 			String pname;
 			boolean otherplayer = false;
             
+			//Checks if command is used on self or other player
 			try {
             	pname = args[0];
             	otherplayer = true;
@@ -60,6 +61,7 @@ public class Main extends JavaPlugin implements Listener {
 		return false;
     }
 	
+	//Prevents players from moving items in inventory and sets their kits
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
 		e.setCancelled(true);
@@ -70,6 +72,7 @@ public class Main extends JavaPlugin implements Listener {
 		}
 	}
 	
+	//Ensures items don't drop and updates stats
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		e.setKeepInventory(true);

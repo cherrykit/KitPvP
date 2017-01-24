@@ -44,6 +44,7 @@ public class Stats {
 		try {
 			Statement stmt = c.createStatement();
 			String[] current = getStats(pname);
+			
 			if (current[0] == "0" && current[1] == "0") {
 				System.out.println("Creating column for " + pname);
 				String query = "insert into STATS (playername, kills, deaths) values ('" + 
@@ -55,6 +56,7 @@ public class Stats {
 				query = "update STATS set deaths = " + deaths + " where playername = '" + pname + "'";
 				stmt.executeUpdate(query);
 			}
+			
 			stmt.close();
 		} catch (Exception e) {
 			System.out.println(e);
