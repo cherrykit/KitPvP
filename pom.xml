@@ -23,7 +23,7 @@
     <finalName>KitPvP</finalName>
       <resources>
         <resource>
-          <directory>${basedir}</directory>
+          <directory>${basedir}/src/main/java/</directory>
           <includes>
             <include>plugin.yml</include>
          </includes>
