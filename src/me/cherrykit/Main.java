@@ -30,25 +30,28 @@ public class Main extends JavaPlugin implements Listener {
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         
+		//Registers /kit command
 		if (cmd.getName().equalsIgnoreCase("kit") && sender instanceof Player) {
-            Player p = (Player) sender;
-            kit.openGUI(p);
-            return true;
-        }
+			Player p = (Player) sender;
+			kit.openGUI(p);
+			return true;
+		}
         
+		//Registers /stats command
 		if (cmd.getName().equalsIgnoreCase("stats") && sender instanceof Player) {
-            Player p = (Player) sender;
+			Player p = (Player) sender;
 			String pname;
 			boolean otherplayer = false;
             
-			//Checks if command is used on self or other player
+			//Checks if command is used on self or other player, sets pname
 			try {
-            	pname = args[0];
-            	otherplayer = true;
-            } catch (Exception e) {
-            	pname = p.getName();
-            }
+				pname = args[0];
+				otherplayer = true;
+			} catch (Exception e) {
+				pname = p.getName();
+			}
 			
+			//Gets stats of player
 			String[] stats = Stats.getStats(pname);
 			if (otherplayer) {
 				p.sendMessage(ChatColor.GREEN + "The player " + pname + " has " + stats[0] + " kills and " + stats[1] + " deaths.");
@@ -64,8 +67,10 @@ public class Main extends JavaPlugin implements Listener {
 	//Prevents players from moving items in inventory and sets their kits
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
+		//Prevents players from moving items
 		e.setCancelled(true);
 		
+		//If the inventory is the GUI: sets kit and closes inventory
 		if (!(e.getClickedInventory() instanceof PlayerInventory)) {
 			kit.setKit(e.getCurrentItem(), e.getWhoClicked().getInventory());
 			e.getWhoClicked().closeInventory();
@@ -75,14 +80,17 @@ public class Main extends JavaPlugin implements Listener {
 	//Ensures items don't drop and updates stats
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
+		//Clears inventory on death without dropping items
 		e.setKeepInventory(true);
 		e.getEntity().getInventory().setContents(new ItemStack[39]);
 		
+		//Increases deaths in stats
 		String died = e.getEntity().getName();
 		String[] currentstats = Stats.getStats(died);
 		String deaths = String.valueOf(Integer.parseInt(currentstats[1]) + 1);
 		Stats.setStats(died,currentstats[0],deaths);
 		
+		//Increases kills in stats
 		Player killer = e.getEntity().getKiller();
 		if (killer != null) {
 			currentstats = Stats.getStats(killer.getName());
