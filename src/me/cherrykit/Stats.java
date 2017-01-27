@@ -6,16 +6,18 @@ public class Stats {
 
 	private static Connection c;
 	
+	//Gets connection to database
 	public static void getConnection() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-		    c = DriverManager.getConnection("jdbc:sqlite:stats.db");
-		    System.out.println("Successfully connected to database");
+			c = DriverManager.getConnection("jdbc:sqlite:stats.db");
+			System.out.println("Successfully connected to database");
 		} catch (Exception e) {
 			System.out.println("Error while connecting: " + e);
 		}
 	}
 	
+	//Returns stats of given player
 	public static String[] getStats(String pname) {
 		String[] results = new String[2];
 		try {
@@ -40,17 +42,21 @@ public class Stats {
 		return results;
 	}
 	
+	//Sets stats of given player
 	public static void setStats(String pname, String kills, String deaths) {
 		try {
 			Statement stmt = c.createStatement();
 			String[] current = getStats(pname);
 			
+			//If player not yet in database
 			if (current[0] == "0" && current[1] == "0") {
 				System.out.println("Creating column for " + pname);
 				String query = "insert into STATS (playername, kills, deaths) values ('" + 
 				       pname + "' ," + kills + " ," + deaths + ")";
 				stmt.executeUpdate(query);
-			} else {
+			} 
+			//If player aleady in database
+			else {
 				String query = "update STATS set kills = " + kills + " where playername = '" + pname + "'";
 				stmt.executeUpdate(query);
 				query = "update STATS set deaths = " + deaths + " where playername = '" + pname + "'";
@@ -63,6 +69,7 @@ public class Stats {
 		}
 	}
 	
+	//Closes connection to database
 	public static void closeConnection() {
 		try {
 			c.close();
